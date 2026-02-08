@@ -1,0 +1,26 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio 2015/2017+ cache/options directory
+.vs/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific build results
+*.suo
+
+# Local Databases
+*.db
+*.db-shm
+*.db-wal
+
+# OS generated files
+.DS_Store
+
+# Environment specific files
+appsettings.Development.json
+.env
