@@ -1,0 +1,56 @@
+Project Name: SpotifyRoast
+Group Members: [Your Names Here]
+
+Project Description:
+--------------------
+SpotifyRoast is an ASP.NET MVC Web Application designed to manage user profiles for a future "Roast" feature. 
+Currently, it supports full CRUD (Create, Read, Update, Delete) operations for Users.
+Users can Sign Up (Create), View a list of all users (Read), Edit their profile (Update), and Delete their account (Delete).
+
+Future plans include integrating the Spotify API and an LLM (Large Language Model) to generate humorous "roasts" based on a user's music taste.
+
+Setup & Configuration:
+----------------------
+1. Project Creation:
+   - Created manually using `dotnet new mvc`.
+
+
+
+Week 4 C# Assignment
+
+
+
+Aarohan Niraula
+Westcliff University
+PRG 320: C# Programming 
+Professor Shrestha
+February 1, 2025
+
+Week 4 C# Assignment
+For this week’s assignment, we had to build upon Week 3’s library management system by adding object-oriented programming principles and using file handling methods. First I wanted to show my improvement in writing a interface driven design alongside polishing my skills in abstraction, polymorphism and data. The challenge this time around was to find a way to persist data across various user sessions which I did by adding file capabilities to the system. We have three items now: Books, Magazines, and Newspapers that we can interact with with a single unified interface. 
+	The interface is named ILibraryItem interface and there’s a LibraryItemBase abstract class so that all items must follow and be capable of certain functions. This reduces code duplication, enforces defined behaviour and enables polymorphism in the system. The new and improved system for checking duplicates is a good showcase of abstraction. The File I/O system is totally new and uses JSON serialization with polymorphic type handling. This allows us to load existing data when starting up and persists across sessions. Using this, we can finally store data for more than  one program cycle.
+
+   - Structure follows standard ASP.NET MVC conventions (Models, Views, Controllers).
+
+2. Database Setup:
+   - Database: SQLite
+   - Connection String: Defined in `appsettings.json` as "Data Source=SpotifyRoast.db".
+
+3. Entity Framework Core:
+   - Packages: 
+     - Microsoft.EntityFrameworkCore.Sqlite
+     - Microsoft.EntityFrameworkCore.Tools
+     - Microsoft.EntityFrameworkCore.Design
+   - Context: `ApplicationDbContext` manages the `User` entity.
+   - Migrations: Used `dotnet ef migrations add InitialCreate` to generate the schema and `dotnet ef database update` to apply it.
+
+4. Architecture:
+   - Model: `User.cs` contains properties like Username, Email, Password, and SpotifyId.
+   - View: Razor Views (`.cshtml`) in `Views/User/` handling the UI for CRUD operations.
+   - Controller: `UserController.cs` handles the HTTP requests and interacts with the database via `ApplicationDbContext`.
+
+How to Run:
+-----------
+1. Navigate to the project folder.
+2. Run `dotnet run`.
+3. Open the browser at `http://localhost:5xxx`.
