@@ -23,6 +23,7 @@ builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUser, UserRepository>();
 builder.Services.AddScoped<IMenu, MenuRepository>();
 builder.Services.AddScoped<IRoastService, RoastService>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 var app = builder.Build();
 
@@ -49,5 +50,15 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+SeedDatabase();
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}
