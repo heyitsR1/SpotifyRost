@@ -52,14 +52,30 @@ namespace SpotifyRoast.Controllers
         [HttpPost]
         public IActionResult SignUp(User user)
         {
+            // Remove UserRoles and Roasts from validation as they are empty on signup
+            ModelState.Remove(nameof(User.UserRoles));
+            ModelState.Remove(nameof(User.Roasts));
+            ModelState.Remove("UserRoles"); 
+            ModelState.Remove("Roasts");
+
             if (ModelState.IsValid)
             {
-                var response = _userService.Register(user, "User"); // Default to User role
+                var response = _userService.Register(user, "User"); 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    TempData["Success"] = "Account created! Please login.";
                     return RedirectToAction("Index");
                 }
                 ViewBag.Error = response.Message;
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine($"Signup Validation Error: {error}");
+                }
+                ViewBag.Error = "Validation failed: " + string.Join(", ", errors);
             }
             return View(user);
         }
