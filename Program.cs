@@ -15,6 +15,14 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// Aarohan: Adding Real Authentication
+builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login";
+        options.AccessDeniedPath = "/Home/AccessDenied";
+    });
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 

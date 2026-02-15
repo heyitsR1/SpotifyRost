@@ -1,0 +1,12 @@
+@model IEnumerable<SpotifyRoast.Models.Menu>
+
+<ul class="navbar-nav flex-grow-1">
+    @foreach (var menu in Model)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="@menu.Url">
+                <i class="@menu.Icon"></i> @menu.Name
+            </a>
+        </li>
+    }
+</ul>

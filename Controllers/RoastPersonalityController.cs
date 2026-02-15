@@ -4,7 +4,7 @@ using SpotifyRoast.Services;
 
 namespace SpotifyRoast.Controllers
 {
-    // [Authorize(Roles = "Admin")] // Uncomment when Roles are fully working
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")] 
     public class RoastPersonalityController : Controller
     {
         private readonly IGeneric<RoastPersonality> _repository;
