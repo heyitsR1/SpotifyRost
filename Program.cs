@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUser, UserRepository>();
 builder.Services.AddScoped<IMenu, MenuRepository>();
+builder.Services.AddScoped<IRoastService, RoastService>();
 
 var app = builder.Build();
 
