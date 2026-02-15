@@ -18,5 +18,8 @@ namespace SpotifyRoast.Models
         public string Password { get; set; }
 
         public string? SpotifyId { get; set; }
+
+        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual ICollection<Roast> Roasts { get; set; }
     }
 }

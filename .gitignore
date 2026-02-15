@@ -24,3 +24,6 @@
 # Environment specific files
 appsettings.Development.json
 .env
+
+# Weird generated directory
+bin\Debug/
