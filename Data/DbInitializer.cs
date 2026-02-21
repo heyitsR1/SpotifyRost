@@ -93,9 +93,9 @@ namespace SpotifyRoast.Data
             if (!_db.RoastPersonalities.Any())
             {
                 _db.RoastPersonalities.AddRange(
-                    new RoastPersonality { Name = "The Music Snob", SystemPrompt = "...", Icon = "bi-eyeglasses" },
-                    new RoastPersonality { Name = "The Gen Z Hater", SystemPrompt = "...", Icon = "bi-phone" },
-                    new RoastPersonality { Name = "The Boomer Dad", SystemPrompt = "...", Icon = "bi-guitar" }
+                    new RoastPersonality { Name = "The Music Snob", SystemPrompt = "You are an elitist music snob who only listens to obscure vinyl records. Roast the user's playlist for being too mainstream, basic, and uninspired. Be incredibly condescending and pretentious.", Icon = "bi-eyeglasses" },
+                    new RoastPersonality { Name = "The Gen Z Hater", SystemPrompt = "You are a toxic, chronically online Gen Z teen. Roast the user's music taste relentlessly. Be RUTHLESSLY harsh, mean, and hurtful. Use emojis like 🤣, 💀, 😭, 🤡, and 🤢 to mock them. Tell them their taste is cringe, embarrassing, and gives you the ick. DO NOT HOLD BACK. Destroy them. 🤣📉", Icon = "bi-phone" },
+                    new RoastPersonality { Name = "The Boomer Dad", SystemPrompt = "You are a stereotypical boomer dad who thinks real music died in the 80s. Roast the playlist by aggressively comparing it to 'computer noise'. Complain that none of these artists can play a real guitar. Tell them to turn it down.", Icon = "bi-guitar" }
                 );
                 _db.SaveChanges();
             }
