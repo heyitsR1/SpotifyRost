@@ -43,5 +43,46 @@ namespace SpotifyRoast.Controllers
             
             return NotFound();
         }
+
+        // POST: api/RoastPersonalityApi
+        [HttpPost]
+        public ActionResult<RoastPersonality> CreateRoastPersonality([FromBody] RoastPersonality roastPersonality)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = _repository.Insert(roastPersonality);
+            if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return CreatedAtAction(nameof(GetRoastPersonality), new { id = roastPersonality.Id }, roastPersonality);
+            }
+
+            return StatusCode((int)response.StatusCode, response.ErrorMessage ?? "Error creating data.");
+        }
+
+        // PUT: api/RoastPersonalityApi/5
+        [HttpPut("{id}")]
+        public IActionResult UpdateRoastPersonality(int id, [FromBody] RoastPersonality roastPersonality)
+        {
+            if (id != roastPersonality.Id)
+            {
+                return BadRequest("ID mismatch");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = _repository.Update(roastPersonality);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return NoContent();
+            }
+
+            return StatusCode((int)response.StatusCode, response.ErrorMessage ?? "Error updating data.");
+        }
     }
 }
