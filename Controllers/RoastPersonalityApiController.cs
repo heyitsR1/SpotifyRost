@@ -28,7 +28,7 @@ namespace SpotifyRoast.Controllers
             }
             
             // Return empty list or error if something goes wrong
-            return StatusCode((int)response.StatusCode, response.ErrorMessage ?? "Error retrieving data.");
+            return StatusCode((int)response.StatusCode, response.Message ?? "Error retrieving data.");
         }
 
         // GET: api/RoastPersonalityApi/5
@@ -59,7 +59,7 @@ namespace SpotifyRoast.Controllers
                 return CreatedAtAction(nameof(GetRoastPersonality), new { id = roastPersonality.Id }, roastPersonality);
             }
 
-            return StatusCode((int)response.StatusCode, response.ErrorMessage ?? "Error creating data.");
+            return StatusCode((int)response.StatusCode, response.Message ?? "Error creating data.");
         }
 
         // PUT: api/RoastPersonalityApi/5
@@ -82,7 +82,7 @@ namespace SpotifyRoast.Controllers
                 return NoContent();
             }
 
-            return StatusCode((int)response.StatusCode, response.ErrorMessage ?? "Error updating data.");
+            return StatusCode((int)response.StatusCode, response.Message ?? "Error updating data.");
         }
 
         // DELETE: api/RoastPersonalityApi/5
@@ -105,7 +105,7 @@ namespace SpotifyRoast.Controllers
                 return NoContent();
             }
 
-            return StatusCode((int)updateResponse.StatusCode, updateResponse.ErrorMessage ?? "Error performing soft delete.");
+            return StatusCode((int)updateResponse.StatusCode, updateResponse.Message ?? "Error performing soft delete.");
         }
     }
 }
