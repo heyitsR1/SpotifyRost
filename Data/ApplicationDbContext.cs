@@ -49,6 +49,9 @@ namespace SpotifyRoast.Data
                 .HasOne(mr => mr.Menu)
                 .WithMany(m => m.MenuRoles)
                 .HasForeignKey(mr => mr.MenuId);
+
+            // Global Query Filters (Soft Delete)
+            modelBuilder.Entity<RoastPersonality>().HasQueryFilter(r => !r.IsDeleted);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,5 +19,8 @@ namespace SpotifyRoast.Models
 
         [StringLength(50)]
         public string Icon { get; set; } // e.g. "fa-robot", "fa-fire"
+
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; } = false;
     }
 }
