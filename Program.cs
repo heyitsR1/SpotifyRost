@@ -2,8 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using SpotifyRoast.Data;
 using SpotifyRoast.Services;
 using SpotifyRoast.Repositories;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Load .env variables into environment
+Env.Load();
+builder.Configuration.AddEnvironmentVariables();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -26,11 +32,13 @@ builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.Cookies.C
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Repositories
+// Repositories & Services
 builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUser, UserRepository>();
 builder.Services.AddScoped<IMenu, MenuRepository>();
 builder.Services.AddScoped<IRoastService, RoastService>();
+builder.Services.AddScoped<ISpotifyService, SpotifyService>();
+builder.Services.AddHttpClient<IRoastGenerationService, RoastGenerationService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 var app = builder.Build();
