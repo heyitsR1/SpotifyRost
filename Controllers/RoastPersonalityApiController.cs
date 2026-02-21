@@ -84,5 +84,28 @@ namespace SpotifyRoast.Controllers
 
             return StatusCode((int)response.StatusCode, response.ErrorMessage ?? "Error updating data.");
         }
+
+        // DELETE: api/RoastPersonalityApi/5
+        [HttpDelete("{id}")]
+        public IActionResult DeleteRoastPersonality(int id)
+        {
+            var response = _repository.GetById(id);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK || response.Data == null)
+            {
+                return NotFound();
+            }
+
+            // Soft delete
+            var personality = response.Data;
+            personality.IsDeleted = true;
+            
+            var updateResponse = _repository.Update(personality);
+            if (updateResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return NoContent();
+            }
+
+            return StatusCode((int)updateResponse.StatusCode, updateResponse.ErrorMessage ?? "Error performing soft delete.");
+        }
     }
 }
