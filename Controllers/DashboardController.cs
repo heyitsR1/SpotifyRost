@@ -37,10 +37,7 @@ namespace SpotifyRoast.Controllers
 
         public IActionResult NewRoast()
         {
-            // Load personalities for the dropdown
-            var personalities = _personalityRepository.GetAll().Datas;
-            ViewBag.Personalities = personalities;
-            return View();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
