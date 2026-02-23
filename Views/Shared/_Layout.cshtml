@@ -24,8 +24,11 @@
                     <ul class="navbar-nav ms-auto">
                         @if (Context.User.Identity != null && Context.User.Identity.IsAuthenticated)
                         {
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="nav-link text-dark fw-bold pe-3">Hi, @Context.User.Identity.Name!</span>
+                            </li>
                             <li class="nav-item">
-                                <span class="nav-link text-dark fw-bold">Hi, @Context.User.Identity.Name!</span>
+                                <a class="btn btn-outline-danger ms-2" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
                             </li>
                         }
                         else

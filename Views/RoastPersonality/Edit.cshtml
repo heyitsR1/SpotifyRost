@@ -1,0 +1,49 @@
+@model SpotifyRoast.Models.RoastPersonality
+
+@{
+    ViewData["Title"] = "Edit Roast Personality";
+}
+
+<div class="container mt-4">
+    <h2>Edit Roast Personality</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Name" class="control-label fw-bold"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Icon" class="control-label fw-bold"></label>
+                            <input asp-for="Icon" class="form-control" />
+                            <span asp-validation-for="Icon" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label asp-for="SystemPrompt" class="control-label fw-bold"></label>
+                            <textarea asp-for="SystemPrompt" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="SystemPrompt" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group text-end">
+                            <a asp-action="Index" class="btn btn-secondary me-2">Back to List</a>
+                            <input type="submit" value="Save Changes" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

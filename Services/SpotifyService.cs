@@ -9,23 +9,11 @@ namespace SpotifyRoast.Services
 
     public class SpotifyService : ISpotifyService
     {
-        private readonly SpotifyClient _spotifyClient;
 
         public SpotifyService(IConfiguration config)
         {
-            var clientId = config["CLIENT_ID"] ?? config["SPOTIFY_CLIENT_ID"];
-            var clientSecret = config["CLIENT_SECRET"] ?? config["SPOTIFY_CLIENT_SECRET"];
-
-            if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
-            {
-                throw new Exception("Spotify Credentials not found in environment variables.");
-            }
-
-            var configSpotify = SpotifyClientConfig.CreateDefault();
-            var request = new ClientCredentialsRequest(clientId, clientSecret);
-            var response = new OAuthClient(configSpotify).RequestToken(request).GetAwaiter().GetResult();
-
-            _spotifyClient = new SpotifyClient(configSpotify.WithToken(response.AccessToken));
+            // API credentials no longer strictly needed for fetching public playlists 
+            // since we are falling back to the embed scraper to bypass the 403 API blocking
         }
 
         public async Task<string> GetPlaylistDetailsAsync(string playlistUrl)
@@ -33,24 +21,35 @@ namespace SpotifyRoast.Services
             try
             {
                 string playlistId = ExtractPlaylistId(playlistUrl);
-                var playlist = await _spotifyClient.Playlists.Get(playlistId);
+                
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+                
+                var html = await client.GetStringAsync($"https://open.spotify.com/embed/playlist/{playlistId}");
+                var match = System.Text.RegularExpressions.Regex.Match(html, @"<script id=""__NEXT_DATA__"" type=""application/json"">(.*?)</script>");
+                
+                if (!match.Success)
+                {
+                    throw new Exception("Failed to parse Spotify playlist data from the public embed.");
+                }
+
+                var jsonStr = match.Groups[1].Value;
+                using var doc = System.Text.Json.JsonDocument.Parse(jsonStr);
+                
+                var entity = doc.RootElement.GetProperty("props").GetProperty("pageProps").GetProperty("state").GetProperty("data").GetProperty("entity");
+                var trackList = entity.GetProperty("trackList");
+                var playlistName = entity.GetProperty("name").GetString();
                 
                 var tracksInfo = new List<string>();
                 
-                if (playlist.Tracks?.Items != null)
+                foreach (var track in trackList.EnumerateArray().Take(50))
                 {
-                    // Get up to 50 tracks to keep the LLM context size reasonable
-                    foreach (var item in playlist.Tracks.Items.Take(50))
-                    {
-                        if (item.Track is FullTrack track)
-                        {
-                            var artists = string.Join(", ", track.Artists.Select(a => a.Name));
-                            tracksInfo.Add($"- {track.Name} by {artists}");
-                        }
-                    }
+                    var title = track.GetProperty("title").GetString();
+                    var subtitle = track.GetProperty("subtitle").GetString();
+                    tracksInfo.Add($"- {title} by {subtitle}");
                 }
 
-                return $"Playlist: {playlist.Name}\nTracks:\n{string.Join("\n", tracksInfo)}";
+                return $"Playlist: {playlistName}\nTracks:\n{string.Join("\n", tracksInfo)}";
             }
             catch (Exception ex)
             {

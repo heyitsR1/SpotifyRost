@@ -54,6 +54,7 @@ public class HomeController : Controller
         {
             // 1. Fetch Playlist Data
             var playlistData = await _spotifyService.GetPlaylistDetailsAsync(spotifyPlaylistUrl);
+            Console.WriteLine($"\n--- PLAYLIST DATA SENT TO CLAUDE ---\n{playlistData}\n------------------------------------\n");
 
             // 2. Generate Roast
             var roastResult = await _roastGenerationService.GenerateRoastAsync(personality.SystemPrompt, playlistData);
