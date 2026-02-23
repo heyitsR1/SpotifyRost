@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace SpotifyRoast.Controllers
 {
-    // [Authorize] // Kashish: Uncomment when Auth is ready
+    [Microsoft.AspNetCore.Authorization.Authorize] // Require Auth for Dashboard
     public class DashboardController : Controller
     {
         private readonly IGeneric<Roast> _roastRepository;
@@ -20,13 +20,13 @@ namespace SpotifyRoast.Controllers
 
         public IActionResult Index()
         {
-            // Get current user ID (mocked for now until Auth is live)
-            // var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); 
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Index", "Login");
+            }
             
-            // For now, just show all roasts or empty list
-            // In real impl, we would use _roastRepository.GetAll(r => r.UserId == userId, "Personality")
-            
-            var response = _roastRepository.GetAll(null, "Personality");
+            var response = _roastRepository.GetAll(r => r.UserId == userId, "Personality");
             
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {

@@ -5,9 +5,9 @@
 
 <div class="text-center mt-5">
     <h1 class="display-4 fw-bold mb-3">Get Roasted by AI 🔥</h1>
-    <p class="lead text-muted mb-5">Drop a public Spotify Playlist link below and let our AI judge your terrible music taste.</p>
+    <p class="lead text-white mb-5">Drop a public Spotify Playlist link below and let our AI judge your terrible music taste.</p>
 
-    <div class="card shadow-sm mx-auto" style="max-width: 600px; border-radius: 1rems;">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px; border-radius: 1rem;">
         <div class="card-body p-4">
             
             @if (ViewBag.Error != null)
@@ -38,7 +38,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-dark btn-lg w-100 fw-bold" id="roastBtn">
+                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold" id="roastBtn">
                     <span id="btnText">Roast Me <i class="bi bi-fire"></i></span>
                     <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                 </button>
@@ -48,7 +48,7 @@
 
     @if (ViewBag.Roast != null)
     {
-        <div class="card shadow-lg mx-auto mt-5 border-0" style="max-width: 800px; background-color: #f8f9fa;">
+        <div class="card shadow-lg mx-auto mt-5 border-0" style="max-width: 800px;">
             <div class="card-body p-5">
                 <h4 class="text-uppercase text-muted fw-bold mb-4">@ViewBag.SelectedPersonalityName Says:</h4>
                 <p class="fs-5" style="white-space: pre-wrap;">@ViewBag.Roast</p>

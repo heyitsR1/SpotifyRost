@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SpotifyRoast.Models;
 using SpotifyRoast.Services;
+using System.Security.Claims;
 
 namespace SpotifyRoast.Controllers;
 
@@ -10,15 +11,18 @@ public class HomeController : Controller
     private readonly IGeneric<RoastPersonality> _personalityRepo;
     private readonly ISpotifyService _spotifyService;
     private readonly IRoastGenerationService _roastGenerationService;
+    private readonly IGeneric<Roast> _roastRepo;
 
     public HomeController(
         IGeneric<RoastPersonality> personalityRepo,
         ISpotifyService spotifyService,
-        IRoastGenerationService roastGenerationService)
+        IRoastGenerationService roastGenerationService,
+        IGeneric<Roast> roastRepo)
     {
         _personalityRepo = personalityRepo;
         _spotifyService = spotifyService;
         _roastGenerationService = roastGenerationService;
+        _roastRepo = roastRepo;
     }
 
     [HttpGet]
@@ -61,6 +65,23 @@ public class HomeController : Controller
 
             ViewBag.Roast = roastResult;
             ViewBag.SelectedPersonalityName = personality.Name;
+
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var userIdString = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+                if (int.TryParse(userIdString, out int userId))
+                {
+                    var newRoast = new Roast
+                    {
+                        UserId = userId,
+                        PersonalityId = personalityId,
+                        SpotifyLink = spotifyPlaylistUrl,
+                        RoastContent = roastResult,
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    _roastRepo.Insert(newRoast);
+                }
+            }
             
             return View("Index");
         }
